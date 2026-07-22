@@ -1,121 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './context/AuthContext'
+import MainLayout from './layouts/MainLayout'
 
-function App() {
-  const [count, setCount] = useState(0)
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import ServicesPage from './pages/ServicesPage'
+import GalleryPage from './pages/GalleryPage'
+import FacilitiesPage from './pages/FacilitiesPage'
+import AccommodationPage from './pages/AccommodationPage'
+import RestaurantPage from './pages/RestaurantPage'
+import EventsPage from './pages/EventsPage'
+import ContactPage from './pages/ContactPage'
+import AboutPage from './pages/AboutPage'
+import ProfilePage from './pages/ProfilePage'
+import AdminDashboard from './pages/AdminDashboard'
+import NotFoundPage from './pages/NotFoundPage'
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full" />
+  </div>
+)
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) return <LoadingSpinner />
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: { pathname: window.location.pathname } }} replace />
+  }
+  return children
+}
+
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin, loading } = useAuth()
+
+  if (loading) return <LoadingSpinner />
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (!isAdmin()) return <Navigate to="/" replace />
+
+  return children
+}
+
+const App = () => {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <Routes>
+      <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+      <Route path="/login" element={<MainLayout><LoginPage /></MainLayout>} />
+      <Route path="/register" element={<MainLayout><RegisterPage /></MainLayout>} />
 
-      <div className="ticks"></div>
+      <Route path="/services" element={<MainLayout><ProtectedRoute><ServicesPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/gallery" element={<MainLayout><ProtectedRoute><GalleryPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/facilities" element={<MainLayout><ProtectedRoute><FacilitiesPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/accommodation" element={<MainLayout><ProtectedRoute><AccommodationPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/restaurant" element={<MainLayout><ProtectedRoute><RestaurantPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/events" element={<MainLayout><ProtectedRoute><EventsPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/contact" element={<MainLayout><ProtectedRoute><ContactPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/about" element={<MainLayout><ProtectedRoute><AboutPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/profile" element={<MainLayout><ProtectedRoute><ProfilePage /></ProtectedRoute></MainLayout>} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <Route path="/admin/*" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <Route path="*" element={<MainLayout><NotFoundPage /></MainLayout>} />
+    </Routes>
   )
 }
 
