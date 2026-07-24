@@ -7,11 +7,7 @@ export const resolveApiBaseUrl = (env = import.meta.env) => {
     return configuredBaseUrl
   }
 
-  if (env.DEV) {
-    return 'http://localhost:8000/api'
-  }
-
-  return 'https://kabon-hotel1-backend.onrender.com/api'
+  return '/api'
 }
 
 export const API_BASE_URL = resolveApiBaseUrl()

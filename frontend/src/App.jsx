@@ -55,14 +55,14 @@ const App = () => {
       <Route path="/login" element={<MainLayout><LoginPage /></MainLayout>} />
       <Route path="/register" element={<MainLayout><RegisterPage /></MainLayout>} />
 
-      <Route path="/services" element={<MainLayout><ProtectedRoute><ServicesPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/services" element={<MainLayout><ServicesPage /></MainLayout>} />
       <Route path="/gallery" element={<MainLayout><ProtectedRoute><GalleryPage /></ProtectedRoute></MainLayout>} />
       <Route path="/facilities" element={<MainLayout><ProtectedRoute><FacilitiesPage /></ProtectedRoute></MainLayout>} />
       <Route path="/accommodation" element={<MainLayout><ProtectedRoute><AccommodationPage /></ProtectedRoute></MainLayout>} />
       <Route path="/restaurant" element={<MainLayout><ProtectedRoute><RestaurantPage /></ProtectedRoute></MainLayout>} />
       <Route path="/events" element={<MainLayout><ProtectedRoute><EventsPage /></ProtectedRoute></MainLayout>} />
-      <Route path="/contact" element={<MainLayout><ProtectedRoute><ContactPage /></ProtectedRoute></MainLayout>} />
-      <Route path="/about" element={<MainLayout><ProtectedRoute><AboutPage /></ProtectedRoute></MainLayout>} />
+      <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
+      <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
       <Route path="/profile" element={<MainLayout><ProtectedRoute><ProfilePage /></ProtectedRoute></MainLayout>} />
 
       <Route path="/admin/*" element={<AdminRoute><AdminDashboard /></AdminRoute>} />

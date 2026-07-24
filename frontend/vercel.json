@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://kabon-hotel1-backend.onrender.com/api/$1"
+    }
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
