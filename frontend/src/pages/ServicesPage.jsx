@@ -3,6 +3,14 @@ import { useFetch } from '../hooks/useFetch'
 import { protectedAPI } from '../services/api'
 import { Grid, Search, Loader2, Tag } from 'lucide-react'
 
+const normalizeListData = (payload) => {
+  if (Array.isArray(payload)) return payload
+  if (payload && Array.isArray(payload.results)) return payload.results
+  if (payload && Array.isArray(payload.items)) return payload.items
+  if (payload && Array.isArray(payload.data)) return payload.data
+  return []
+}
+
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -12,6 +20,9 @@ const ServicesPage = () => {
     () => protectedAPI.getServices({ search: searchTerm, category: selectedCategory }),
     [searchTerm, selectedCategory]
   )
+
+  const categoryList = normalizeListData(categories)
+  const serviceList = normalizeListData(services)
 
   return (
     <div className="page-container">
@@ -38,7 +49,7 @@ const ServicesPage = () => {
           className="input-field sm:w-64"
         >
           <option value="">All Categories</option>
-          {categories?.map((cat) => (
+          {categoryList.map((cat) => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
@@ -53,7 +64,7 @@ const ServicesPage = () => {
         <div className="text-center py-20 text-red-600">{error}</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(services?.results ?? (Array.isArray(services) ? services : []))?.map((service) => (
+          {serviceList.map((service) => (
             <div key={service.id} className="card hover:shadow-lg transition-shadow">
               {service.image && (
                 <div className="h-48 bg-gray-200 overflow-hidden">
@@ -86,7 +97,7 @@ const ServicesPage = () => {
         </div>
       )}
 
-      {(services?.results ?? (Array.isArray(services) ? services : []))?.length === 0 && !loading && (
+      {serviceList.length === 0 && !loading && (
         <div className="text-center py-20 text-gray-500">
           <Grid className="w-12 h-12 mx-auto mb-4 text-gray-300" />
           <p>No services found matching your criteria.</p>
