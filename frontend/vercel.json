@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kabon-hotel1-backend.onrender.com/api/$1"
+      "destination": "/api/proxy/$1"
     }
   ],
   "routes": [
