@@ -61,8 +61,6 @@ export const authAPI = {
 export const publicAPI = {
   getHomeContent: () => api.get('/home/'),
   getContactInfo: () => api.get('/contact/'),
-
-  
 }
 
 // Protected API
