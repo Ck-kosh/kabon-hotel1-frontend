@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+import { API_BASE_URL, buildApiUrl } from '../config/api'
 
 const AuthContext = createContext(null)
 
@@ -30,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${API_URL}/auth/user/`)
+      const response = await axios.get(buildApiUrl('/auth/user/'))
       setUser(response.data)
       setIsAuthenticated(true)
     } catch (error) {
@@ -44,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login/`, { username, password })
+      const response = await axios.post(buildApiUrl('/auth/login/'), { username, password })
       const { access, refresh } = response.data
       localStorage.setItem('access_token', access)
       localStorage.setItem('refresh_token', refresh)
@@ -61,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register/`, userData)
+      const response = await axios.post(buildApiUrl('/auth/register/'), userData)
       const { access, refresh } = response.data
       localStorage.setItem('access_token', access)
       localStorage.setItem('refresh_token', refresh)
@@ -81,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const refresh = localStorage.getItem('refresh_token')
       if (refresh) {
-        await axios.post(`${API_URL}/auth/logout/`, { refresh })
+        await axios.post(buildApiUrl('/auth/logout/'), { refresh })
       }
     } catch (error) {
       console.error('Logout error:', error)
