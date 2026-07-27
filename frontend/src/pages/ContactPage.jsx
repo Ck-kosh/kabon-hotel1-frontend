@@ -133,7 +133,13 @@ const ContactPage = () => {
       ) : (
         <div className="text-center py-20 text-gray-500">
           <Phone className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-          <p>Contact information not available.</p>
+          <p>contact us through</p>
+          <ls>
+            our social media channels or email us at <span className="text-primary-600">{contact?.email || 'Kabon@gmail.com.com'}</span>
+            <ol>Phone: {contact?.phone || '+254769021360'}</ol>
+            <ol>We will get back to you as soon as possible.</ol>
+
+          </ls>
         </div>
       )}
     </div>
